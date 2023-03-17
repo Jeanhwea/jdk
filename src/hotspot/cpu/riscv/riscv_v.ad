@@ -2441,7 +2441,6 @@ instruct vmaskAll_immI(vRegMask dst, immI src) %{
       __ vmxor_mm(as_VectorRegister($dst$$reg), as_VectorRegister($dst$$reg), as_VectorRegister($dst$$reg));
     } else {
       assert(con == -1, "invalid constant value for mask");
-      BasicType bt = Matcher::vector_element_basic_type(this);
       __ vsetvli(t0, x0, Assembler::e8);
       __ vid_v(as_VectorRegister($dst$$reg));
       __ mv(t0, Matcher::vector_length(this));
@@ -2457,7 +2456,6 @@ instruct vmaskAllI(vRegMask dst, iRegI src, vReg tmp) %{
   format %{ "vmaskAllI $dst, $src\t# KILL $tmp" %}
   ins_encode %{
     BasicType bt = Matcher::vector_element_basic_type(this);
-    uint length_in_bytes = Matcher::vector_length_in_bytes(this);
     __ rvv_vsetvli(bt, Matcher::vector_length_in_bytes(this));
     __ vmv_v_x(as_VectorRegister($tmp$$reg), as_Register($src$$reg));
     __ vmsne_vx(as_VectorRegister($dst$$reg), as_VectorRegister($tmp$$reg), x0);
@@ -2475,7 +2473,6 @@ instruct vmaskAll_immL(vRegMask dst, immL src) %{
       __ vmxor_mm(as_VectorRegister($dst$$reg), as_VectorRegister($dst$$reg), as_VectorRegister($dst$$reg));
     } else {
       assert(con == -1, "invalid constant value for mask");
-      BasicType bt = Matcher::vector_element_basic_type(this);
       __ vsetvli(t0, x0, Assembler::e8);
       __ vid_v(as_VectorRegister($dst$$reg));
       __ mv(t0, Matcher::vector_length(this));
@@ -2491,7 +2488,6 @@ instruct vmaskAllL(vRegMask dst, iRegL src, vReg tmp) %{
   format %{ "vmaskAllL $dst, $src\t# KILL $tmp" %}
   ins_encode %{
     BasicType bt = Matcher::vector_element_basic_type(this);
-    uint length_in_bytes = Matcher::vector_length_in_bytes(this);
     __ rvv_vsetvli(bt, Matcher::vector_length_in_bytes(this));
     __ vmv_v_x(as_VectorRegister($tmp$$reg), as_Register($src$$reg));
     __ vmsne_vx(as_VectorRegister($dst$$reg), as_VectorRegister($tmp$$reg), x0);
